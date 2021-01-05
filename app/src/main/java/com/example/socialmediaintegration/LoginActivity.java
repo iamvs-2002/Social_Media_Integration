@@ -10,12 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -23,24 +26,61 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
+import com.google.firebase.auth.TwitterAuthProvider;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    private Button google;
+    private Button google,github;
+    TwitterLoginButton twitter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //initializing
         mAuth = FirebaseAuth.getInstance();
         google=findViewById(R.id.loginwithgoogle);
+        twitter=findViewById(R.id.loginwithtwitter);
+        github=findViewById(R.id.loginwithgithub);
+
+        TwitterAuthConfig config = new TwitterAuthConfig(getString(R.string.TwitterAPIKey),getString(R.string.TwitterAPISecret));
+        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
+                .twitterAuthConfig(config)
+                .build();
+
+        Twitter.initialize(twitterConfig);
+
+        twitter.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                MainProcess(result.data);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                Toast.makeText(LoginActivity.this, "Error: "+exception.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
-        loginusingGithub();
+        github.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginusingGithub();
+            }
+        });
 
         loginusinggoogle();
         google.setOnClickListener(new View.OnClickListener() {
@@ -52,10 +92,36 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
+    //TWITTER LOGIN STARTS
+    private void MainProcess(TwitterSession session) {
+        AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,session.getAuthToken().secret);
+        mAuth.signInWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                Intent x = new Intent(LoginActivity.this,HomeActivityTwitter.class);
+                startActivity(x);
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(LoginActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    //TWITTER LOGIN ENDS
+
+
+    //GITHUB LOGIN STARTS
     private void loginusingGithub() {
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("github.com");
     }
+    //GITHUB LOGIN ENDS
 
+
+    //GOOGLE LOGIN BEGINS
     private void loginusinggoogle() {
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -72,6 +138,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        twitter.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -108,6 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+    //GOOGLE LOGIN ENDS
 
 
     @Override
