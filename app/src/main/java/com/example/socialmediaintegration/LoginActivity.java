@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -36,6 +36,8 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
@@ -43,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button google,github;
     TwitterLoginButton twitter;
+
+    EditText emailentry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         google=findViewById(R.id.loginwithgoogle);
         twitter=findViewById(R.id.loginwithtwitter);
         github=findViewById(R.id.loginwithgithub);
+        emailentry = findViewById(R.id.emailid);
 
         TwitterAuthConfig config = new TwitterAuthConfig(getString(R.string.TwitterAPIKey),getString(R.string.TwitterAPISecret));
         TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
@@ -75,12 +80,29 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        github.setOnClickListener(new View.OnClickListener() {
+        /*github.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginusingGithub();
+                if (TextUtils.isEmpty(emailentry.getText().toString())){
+                    Toast.makeText(LoginActivity.this, "Kindly enter your email", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    ArrayList<String> xyz = new ArrayList<String>();
+                    SignInWithGithubProvider(
+                            OAuthProvider.newBuilder("github.com")
+                                    .addCustomParameter("login",emailentry.getText().toString())
+                                    .setScopes(
+                                            new ArrayList<String>()
+                                            {
+                                                add("user:email");
+                                            }
+                                    )
+                                    .build()
+                    );
+                }
             }
-        });
+        });*/
 
         loginusinggoogle();
         google.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +137,40 @@ public class LoginActivity extends AppCompatActivity {
 
 
     //GITHUB LOGIN STARTS
-    private void loginusingGithub() {
-        OAuthProvider.Builder provider = OAuthProvider.newBuilder("github.com");
+    private void SignInWithGithubProvider(OAuthProvider login) {
+
+        Task<AuthResult> pendingAuthTask = mAuth.getPendingAuthResult();
+        if (pendingAuthTask!=null){
+            pendingAuthTask.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    Toast.makeText(LoginActivity.this, "User exists!", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(LoginActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else{
+            mAuth.startActivityForSignInWithProvider(this,login)
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                    Intent x = new Intent(LoginActivity.this,HomeActivityGoogle.class);
+                    startActivity(x);
+                    finish();
+                }
+            });
+        }
+
     }
     //GITHUB LOGIN ENDS
 
