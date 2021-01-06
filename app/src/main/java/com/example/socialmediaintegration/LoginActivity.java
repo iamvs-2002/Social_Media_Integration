@@ -51,6 +51,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TwitterAuthConfig config = new TwitterAuthConfig(getString(R.string.TwitterAPIKey),getString(R.string.TwitterAPISecret));
+        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
+                .twitterAuthConfig(config)
+                .build();
+
+        Twitter.initialize(twitterConfig);
+
         setContentView(R.layout.activity_login);
 
         //initializing
@@ -60,14 +67,10 @@ public class LoginActivity extends AppCompatActivity {
         github=findViewById(R.id.loginwithgithub);
         emailentry = findViewById(R.id.emailid);
 
-        TwitterAuthConfig config = new TwitterAuthConfig(getString(R.string.TwitterAPIKey),getString(R.string.TwitterAPISecret));
-        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
-                .twitterAuthConfig(config)
-                .build();
 
-        Twitter.initialize(twitterConfig);
+        twitter.setCallback(new LoginActivity.LoginHandler());
 
-        twitter.setCallback(new Callback<TwitterSession>() {
+        /*twitter.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
                 MainProcess(result.data);
@@ -77,10 +80,10 @@ public class LoginActivity extends AppCompatActivity {
             public void failure(TwitterException exception) {
                 Toast.makeText(LoginActivity.this, "Error: "+exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
 
-        /*github.setOnClickListener(new View.OnClickListener() {
+        github.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(emailentry.getText().toString())){
@@ -89,20 +92,18 @@ public class LoginActivity extends AppCompatActivity {
                 else
                 {
                     ArrayList<String> xyz = new ArrayList<String>();
+                    xyz.add("user:email");
                     SignInWithGithubProvider(
                             OAuthProvider.newBuilder("github.com")
                                     .addCustomParameter("login",emailentry.getText().toString())
                                     .setScopes(
-                                            new ArrayList<String>()
-                                            {
-                                                add("user:email");
-                                            }
+                                            xyz
                                     )
                                     .build()
                     );
                 }
             }
-        });*/
+        });
 
         loginusinggoogle();
         google.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +115,17 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private class LoginHandler extends Callback<TwitterSession> {
+        @Override
+        public void success(Result<TwitterSession> result) {
+            MainProcess(result.data);
+        }
+
+        @Override
+        public void failure(TwitterException exception) {
+            Toast.makeText(LoginActivity.this, "Error: "+exception.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     //TWITTER LOGIN STARTS
@@ -161,13 +173,13 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                @Override
-                public void onSuccess(AuthResult authResult) {
-                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    Intent x = new Intent(LoginActivity.this,HomeActivityGoogle.class);
-                    startActivity(x);
-                    finish();
-                }
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                            Intent x = new Intent(LoginActivity.this,HomeActivityGoogle.class);
+                            startActivity(x);
+                            finish();
+                        }
             });
         }
 
