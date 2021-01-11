@@ -3,43 +3,159 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:padding="10dp"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/loginscreenname"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="52sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:text="L">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:text="ogin">
+        </TextView>
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_below="@+id/loginscreenname"
+        android:layout_marginTop="90dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:textSize="18sp">
+            </TextView>
+            <EditText
+                android:layout_width="wrap_content"
+                android:ems="8"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:inputType="textEmailAddress"
+                android:textSize="18sp"
+                android:layout_weight="2"
+                android:hint="Email"
+                android:id="@+id/emailid">
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:hint="Email"
-            android:id="@+id/emailid">
-        </EditText>
+            android:weightSum="3"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password  "
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:textSize="18sp">
+            </TextView>
+            <EditText
+                android:layout_width="wrap_content"
+                android:ems="12"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_weight="2"
+                android:inputType="textPassword"
+                android:textSize="18sp"
+                android:hint="Password"
+                android:id="@+id/password">
+            </EditText>
+        </LinearLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/loginwithgoogle"
-            android:text="Google">
+            android:text="Sign In"
+            android:background="@drawable/background"
+            android:layout_gravity="center"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:layout_marginTop="70dp"
+            android:id="@+id/signinbutton">
         </Button>
 
-        <com.twitter.sdk.android.core.identity.TwitterLoginButton
-            android:layout_width="wrap_content"
-            android:enabled="true"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/loginwithtwitter">
-        </com.twitter.sdk.android.core.identity.TwitterLoginButton>
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="or, Login with">
+        </TextView>
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/loginwithgithub"
-            android:text="Github">
-        </Button>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <ImageButton
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/loginwithgoogle"
+                android:background="@drawable/gg"
+                android:text="Google">
+            </ImageButton>
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:enabled="true"
+                android:background="@drawable/at"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/loginwithtwitter">
+            </ImageButton>
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/loginwithgithub"
+                android:background="@drawable/gt"
+                android:text="Github">
+            </ImageButton>
+
+        </LinearLayout>
+
+
+
 
     </LinearLayout>
 

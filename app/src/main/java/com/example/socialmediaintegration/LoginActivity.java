@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -43,10 +44,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    private Button google,github;
-    TwitterLoginButton twitter;
+    private ImageButton google,github,twitter;
 
-    EditText emailentry;
+    EditText emailentry,passwordentry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +66,10 @@ public class LoginActivity extends AppCompatActivity {
         twitter=findViewById(R.id.loginwithtwitter);
         github=findViewById(R.id.loginwithgithub);
         emailentry = findViewById(R.id.emailid);
+        passwordentry = findViewById(R.id.password);
 
 
-        twitter.setCallback(new LoginActivity.LoginHandler());
+        /*twitter.setCallback(new LoginActivity.LoginHandler());*/
 
         /*twitter.setCallback(new Callback<TwitterSession>() {
             @Override
@@ -205,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        twitter.onActivityResult(requestCode, resultCode, data);
+        //twitter.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
