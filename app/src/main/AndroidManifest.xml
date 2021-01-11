@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.socialmediaintegration">
 
-    <uses-permission android:name="android.permission.INTERNET"> </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SocialMediaIntegration">
-        <activity android:name=".HomeActivityGithub"></activity>
+        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".HomeActivityGithub" />
         <activity android:name=".HomeActivityTwitter" />
         <activity android:name=".HomeActivityGoogle" />
         <activity android:name=".LoginActivity" />

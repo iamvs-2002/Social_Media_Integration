@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private ImageButton google,github,twitter;
-
+    Button signin;
     EditText emailentry,passwordentry;
 
     @Override
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         github=findViewById(R.id.loginwithgithub);
         emailentry = findViewById(R.id.emailid);
         passwordentry = findViewById(R.id.password);
-
+        signin = findViewById(R.id.signinbutton);
 
         /*twitter.setCallback(new LoginActivity.LoginHandler());*/
 
@@ -82,6 +82,32 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Error: "+exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });*/
+
+        signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(emailentry.getText().toString()) || TextUtils.isEmpty(passwordentry.getText().toString())){
+                    Toast.makeText(LoginActivity.this, "Error: Email and Password fields can't be empty.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    String email = emailentry.getText().toString();
+                    String password = passwordentry.getText().toString();
+                    mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()){
+                                Intent x = new Intent(LoginActivity.this,HomeActivity.class);
+                                startActivity(x);
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "Error: Please try again later.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
 
         github.setOnClickListener(new View.OnClickListener() {
