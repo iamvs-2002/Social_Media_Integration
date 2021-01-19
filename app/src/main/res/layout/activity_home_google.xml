@@ -9,29 +9,78 @@
     tools:context=".HomeActivityGoogle">
     <ImageView
         android:layout_width="120dp"
+        android:layout_centerHorizontal="true"
         android:layout_height="120dp"
         android:id="@+id/userimage">
     </ImageView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aa"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:layout_below="@+id/userimage"
+        android:gravity="center"
+        android:orientation="horizontal">
+
     <TextView
         android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userimage"
+        android:text="Name ">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:layout_height="wrap_content"
         android:id="@+id/username">
     </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/jj"
+        android:layout_below="@+id/aa"
+        android:padding="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
     <TextView
         android:layout_width="wrap_content"
-        android:layout_below="@+id/username"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
+        android:text="Email ">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#000"
         android:id="@+id/useremail">
     </TextView>
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/logoutbutton"
         android:text="LogOut"
-        android:layout_below="@+id/useremail">
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:textColor="#fff"
+        android:layout_centerHorizontal="true"
+        android:textSize="16sp"
+        android:background="@drawable/background"
+        android:layout_below="@+id/jj">
     </Button>
 
 </RelativeLayout>

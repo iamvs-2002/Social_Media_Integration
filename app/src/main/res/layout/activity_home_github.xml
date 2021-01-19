@@ -10,28 +10,77 @@
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/userimageg">
     </ImageView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aas"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:layout_below="@+id/userimageg"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:text="Name ">
+    </TextView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userimageg"
+        android:textSize="18sp"
+        android:textColor="#000"
         android:id="@+id/usernameg">
+    </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aad"
+        android:padding="10dp"
+        android:layout_below="@+id/aas"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:text="Email ">
     </TextView>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_below="@+id/usernameg"
+        android:textSize="18sp"
+        android:textColor="#000"
         android:layout_height="wrap_content"
         android:id="@+id/useremailg">
     </TextView>
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/logoutbuttong"
         android:text="LogOut"
-        android:layout_below="@+id/useremailg">
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:textColor="#fff"
+        android:layout_marginTop="70dp"
+        android:textSize="16sp"
+        android:background="@drawable/background"
+        android:layout_below="@+id/aad">
     </Button>
 
 </RelativeLayout>
