@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Social Media Integration</string>
-    <string name="TwitterAPIKey">CXwuWAxvyHkS5RtCWB5UvaxHN</string>
-    <string name="TwitterAPISecret">Pd5njG5k2t67xODnehg1vmMxVow3fiAFldG10YIyazizsVhtvZ</string>
+    <string name="TwitterAPIKey">xxx</string>
+    <string name="TwitterAPISecret">xxxx</string>
 </resources>
